@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import Resultado from "./components/Resultado";
+import Formulario from "./components/Formulario";
+import Spiner from "./components/Spiner";
 import ImagenCriptoMoneda from "./img/imagen-criptos.png";
-import Formulario from "./Formulario";
 
 const Contenedor = styled.div`
   max-width: 120rem;
@@ -21,22 +23,21 @@ const Main = styled.main`
 const Caja = styled.div`
   @media (min-width: 992px) {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     column-gap: 6rem;
   }
 `;
 const Imagen = styled.img`
   width: 100%;
   object-fit: cover;
-transition: 0.3s;
-filter: grayscale(50%);
+  transition: 0.3s;
+  filter: grayscale(50%);
 
   &:hover {
     opacity: 100%;
-    /* margin-top: -5px; */
     transform: scale(0.9);
     filter: grayscale(0%);
-    cursor:pointer;
+    cursor: pointer;
   }
   @media (min-width: 992px) {
     height: 43rem;
@@ -53,6 +54,13 @@ const Box = styled.div`
     margin-inline: auto;
   }
 `;
+const Content_from = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-inline: auto;
+`;
 const Heading = styled.h1`
   text-align: center;
   margin: 0 0 3rem 0;
@@ -66,6 +74,27 @@ const Heading = styled.h1`
   }
 `;
 function App() {
+  const [moneda, setMoneda] = useState({});
+  const [resultado, setResultado] = useState({});
+  const [cargando, setCargando] = useState(false);
+  useEffect(() => {
+    if (Object.keys(moneda).length > 0) {
+      const cotizarCripto = async () => {
+        setCargando(true);
+        setResultado({});
+        const { state, criptomoneda } = moneda;
+        const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${state}`;
+
+        const respuesta = await fetch(url);
+        const resultados = await respuesta.json();
+
+        setResultado(resultados.DISPLAY[criptomoneda][state]);
+        setCargando(false);
+      };
+      cotizarCripto();
+    }
+  }, [moneda]);
+
   return (
     <Contenedor>
       <Main>
@@ -78,10 +107,18 @@ function App() {
               />
             </Box>
           </div>
-          <div>
-            <Heading>Desde APP</Heading>
-            <Formulario />
-          </div>
+          <Content_from>
+            <div>
+              <Heading>Desde APP</Heading>
+              <Formulario setMoneda={setMoneda} />
+            </div>
+          </Content_from>
+          <Content_from>
+            <div>
+              {cargando && <Spiner />}
+              {resultado.PRICE && <Resultado resultado={resultado} />}
+            </div>
+          </Content_from>
         </Caja>
       </Main>
     </Contenedor>
