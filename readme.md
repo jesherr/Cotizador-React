@@ -1,9 +1,10 @@
 # Cotizador de Criptomonedas
+Projecto de react que te permite 
 
-# Usage
+### Usage
 
 ```
-# Install dependencies
+### Install dependencies
 npm i @emotion/react
 npm i @emotion/styled
 ```
