@@ -1,6 +1,13 @@
+# Cotizador de Criptomonedas
 
+# Usage
 
-1--> npm i @emotion/react
-2--> npm i @emotion/styled
+```
+# Install dependencies
+npm i @emotion/react
+npm i @emotion/styled
+```
 
+------------
 
+[![](https://i.postimg.cc/QxnH5LGH/Cotizador.png)](https://cotisadorcripto.netlify.app/)
