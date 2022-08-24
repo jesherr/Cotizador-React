@@ -1,5 +1,5 @@
 # Cotizador de Criptomonedas
-Projecto de react que te permite 
+Projecto de react que usa la [cryptocompare API](https://min-api.cryptocompare.com/ "cryptocompare API") que permite revisar el precio actual de las critomonedas
 
 ### Usage
 
